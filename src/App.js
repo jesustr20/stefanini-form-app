@@ -4,6 +4,11 @@ import axios from 'axios';
 import {makeStyles} from '@material-ui/core/styles';
 import {Table, TableContainer, TableHead, TableCell, TableBody, TableRow, Modal, Button, TextField} from '@material-ui/core';
 import {Edit, Delete} from '@material-ui/icons';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const baseUrl = 'http://localhost:3001/api/v1';
 
@@ -33,6 +38,7 @@ function App() {
   const [modalInsertar, setModalInsertar]=useState(false);
   const [modalEditar, setModalEditar]=useState(false);
   const [modalEliminar, setModalEliminar]=useState(false);
+  const [labname, setLabname] = useState([]);
 
   const [datoSeleccionado, setDatoSeleccionada]=useState({
     labname: '',
@@ -42,13 +48,29 @@ function App() {
     code: ''
   })
 
-  const handleChange=e=>{
+  const handleChangeSelect = (event) => {
+    const value = event.target.value;
+    const nvalue = typeof value === 'string' ? value : value.value
+    setLabname(typeof value === 'string' ? value.split(',') : value);
+    setDatoSeleccionada(test =>(
+      console.log(test),
+      {
+      ...test,
+      labname: nvalue
+    }
+    ))
+    console.log(nvalue);
+    setLabname(event.target.value);
+  };
+
+  const handleChange= e =>{
     const {name, value}=e.target;
-    console.log(name, value);
-    setDatoSeleccionada(prevState=>({
+    setDatoSeleccionada(prevState=>(
+      {
       ...prevState,
       [name]: value
     }))
+    
     console.log(datoSeleccionado);
   }
   //Solicitar los datos
@@ -117,10 +139,46 @@ function App() {
     peticionGet();
   },[])
 
+  const laboratorios = [
+    {
+      id:1,
+      name:'genfar'
+    },
+    {
+      id:2,
+      name:'gsk'
+    },
+    {
+      id:3,
+      name:'hersil'
+    },
+    {
+      id:4,
+      name:'farmaindustria'
+    }
+  ]
   const bodyInsertar=(
     <div className={styles.modal}>
       <h3>Agregar Nuevo Producto</h3>
-      <TextField name="labname" className={styles.inputMaterial} label="Laboratorio" onChange={handleChange}/>
+      <Box width={"140px"}>
+        <InputLabel id="demo-simple-select-label">Laboratorio</InputLabel>
+        <TextField
+          fullWidth
+          select
+          value={labname}
+          onChange={handleChangeSelect}
+        >
+          <MenuItem value={""}></MenuItem>
+          {
+            laboratorios.map(lab=>{
+              return(
+                <MenuItem key={lab.id} value={lab.name}>{lab.name}</MenuItem>
+              )
+            })
+          }
+        </TextField>
+        
+      </Box>
       <br />
       <TextField name="productname" className={styles.inputMaterial} label="Nombre del Producto" onChange={handleChange}/>
       <br />
@@ -140,7 +198,25 @@ function App() {
   const bodyEditar=(
     <div className={styles.modal}>
       <h3>Editar Producto</h3>
-      <TextField name="labname" className={styles.inputMaterial} label="Laboratorio" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.labname}/>
+      <Box width={"140px"}>
+        <InputLabel id="demo-simple-select-label">Laboratorio</InputLabel>
+        <TextField
+          fullWidth
+          select
+          value={datoSeleccionado && datoSeleccionado.labname}
+          onChange={handleChangeSelect}
+        >
+          <MenuItem value={""}></MenuItem>
+          {
+            laboratorios.map(lab=>{
+              return(
+                <MenuItem key={lab.id} value={lab.name}>{lab.name}</MenuItem>
+              )
+            })
+          }
+        </TextField>
+        
+      </Box>
       <br />
       <TextField name="productname" className={styles.inputMaterial} label="Nombre del Producto" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.productname}/>
       <br />
@@ -160,7 +236,7 @@ function App() {
 
   const bodyEliminar=(
     <div className={styles.modal}>
-      <p>Estás seguro que deseas eliminar el producto<b>{datoSeleccionado && datoSeleccionado.nombre}</b> ? </p>
+      <p>Estás seguro que deseas eliminar el Producto<b>{datoSeleccionado && datoSeleccionado.nombre}</b> ? </p>
       <div align="right">
         <Button color="secondary" onClick={()=>peticionDelete()} >Sí</Button>
         <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
