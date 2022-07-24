@@ -218,9 +218,9 @@ function App() {
       <br />
       <TextField name="productname" className={styles.inputMaterial} label="Nombre del Producto" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.productname}/>
       <br />
-      <TextField name="amount" className={styles.inputMaterial} label="Cantidad" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.amount}/>
+      <TextField name="amount" type="number" InputProps={{pattern: "[0-9]*", inputProps: {min:0} }} className={styles.inputMaterial} label="Cantidad" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.amount}/>
       <br />
-      <TextField name="price" className={styles.inputMaterial} label="Precio" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.price}/>
+      <TextField name="price" type="number" InputProps={{pattern: "[0-9]*", inputProps: {min:0} }} className={styles.inputMaterial} label="Precio" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.price}/>
       <br />
       <TextField name="code" className={styles.inputMaterial} label="Codigo" onChange={handleChange} value={datoSeleccionado && datoSeleccionado.code}/>
       <br />
