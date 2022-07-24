@@ -7,8 +7,6 @@ import {Edit, Delete} from '@material-ui/icons';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 const baseUrl = 'http://localhost:3001/api/v1';
 
@@ -182,9 +180,9 @@ function App() {
       <br />
       <TextField name="productname" className={styles.inputMaterial} label="Nombre del Producto" onChange={handleChange}/>
       <br />
-      <TextField name="amount" className={styles.inputMaterial} label="Cantidad" onChange={handleChange}/>
+      <TextField name="amount" type="number" InputProps={{pattern: "[0-9]*", inputProps: {min:0} }} className={styles.inputMaterial} label="Cantidad" onChange={handleChange}/>
       <br />
-      <TextField name="price" className={styles.inputMaterial} label="Precio" onChange={handleChange}/>
+      <TextField name="price" type="number" InputProps={{pattern: "[0-9]*", inputProps: {min:0} }} className={styles.inputMaterial} label="Precio" onChange={handleChange}/>
       <br />
       <TextField name="code" className={styles.inputMaterial} label="Codigo" onChange={handleChange}/>
       <br /><br />
